@@ -5,12 +5,9 @@ Task
 from .. import config
 from .. import sources
 from .. import targets
-from ..json_util import *
-
-import json
+from ..json_util import MyJSONEncoder, json_deserialize 
 
         
-@json_serialize
 class Task(object):
     """ Basic unit of job """
     config = None
@@ -30,5 +27,5 @@ class Task(object):
 
     @staticmethod
     def from_json(jstr: str):
-        pass
+        return json_deserialize(jstr)
 

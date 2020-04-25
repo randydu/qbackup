@@ -16,5 +16,10 @@ class Test_Task(TestCase):
         self.assertTrue(isinstance(tsk.source, FileSrc))
         self.assertTrue(isinstance(tsk.target, FileTgt))
 
-        print(tsk.to_json())
+        jstr = tsk.to_json()
+
+        print(jstr)
+
+        tsk1 = Task.from_json(jstr)
+        self.assertTrue(isinstance(tsk1, SingleFileDiskCopy))
 
