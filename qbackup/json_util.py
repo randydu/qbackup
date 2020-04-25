@@ -14,7 +14,9 @@ class MyJSONEncoder(json.JSONEncoder):
     def default(self, obj):
         for t in self.types:
             if isinstance(obj, t):
-                return obj.__dict__
+                r = dict(obj.__dict__)
+                r['_cls_'] = type(obj).__module__ + '.' + type(obj).__name__
+                return r
 
         return super().default(obj)
 
