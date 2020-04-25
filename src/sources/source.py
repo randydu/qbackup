@@ -1,3 +1,7 @@
 """ common defination of task source """ 
 
-class Source(object):pass
+from ..json_util import json_serialize
+
+@json_serialize
+class Source(object):
+    pass
