@@ -26,3 +26,8 @@ class Task(object):
     def from_json(jstr: str):
         return json_decode(jstr)
 
+    def run(self):
+        """ [sync] execute the task, returns when the task is either done or cancelled """
+        from ..runners import Runner
+        Runner.getInstance().runTask(self)
+
