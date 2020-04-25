@@ -17,6 +17,9 @@ Limit:
 
 import json
 
+# the unique key in serialized json object, its value is the full
+# identifier of the serialized class
+_clsid = '_cls_' 
 
 def _getTypeKey(typ):
     # get a full class identifier from a class type
@@ -30,7 +33,7 @@ class _MyJSONEncoder(json.JSONEncoder):
     def registerClass(cls, new_type):
         key = _getTypeKey(new_type)
         if key in cls.types:
-            raise RuntimeError(f"class {key} already registered!")
+            raise ValueError(f"class {key} already registered!")
 
         cls.types[key] = new_type
 
@@ -46,7 +49,7 @@ class _MyJSONEncoder(json.JSONEncoder):
 
         if mykey in self.types:
             r = dict(obj.__dict__)
-            r['_cls_'] = mykey
+            r[_clsid] = mykey
             return r
 
         return super().default(obj)
@@ -64,15 +67,15 @@ def json_decode(jstr):
 
     def resolve_my_types(dic):
         # resolve dictionary object to registered json-serializable class instance
-        if '_cls_' not in dic:
+        if _clsid not in dic:
             return dic
 
-        key = dic['_cls_']
+        key = dic[_clsid]
         typ = _MyJSONEncoder.resolveClass(key)
 
         r = typ()
         for i in dic:
-            if i != '_cls_':
+            if i != _clsid:
                 v = dic[i]
                 r.__setattr__(i, v if not isinstance(v, dict) else resolve_my_types(v))
 
