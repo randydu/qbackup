@@ -5,7 +5,7 @@ Task
 from .. import config
 from .. import sources
 from .. import targets
-from ..json_util import MyJSONEncoder, json_deserialize 
+from ..json_util import json_encode, json_decode 
 
         
 class Task(object):
@@ -20,12 +20,9 @@ class Task(object):
 
     def to_json(self, pretty:bool = True)->str:
         """ serialize as json string """
-        if pretty:
-            return MyJSONEncoder(sort_keys=True, indent=4).encode(self)
-        else:
-            return MyJSONEncoder().encode(self)
+        return json_encode(self, pretty)
 
     @staticmethod
     def from_json(jstr: str):
-        return json_deserialize(jstr)
+        return json_decode(jstr)
 

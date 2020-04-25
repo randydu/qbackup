@@ -22,4 +22,6 @@ class Test_Task(TestCase):
 
         tsk1 = Task.from_json(jstr)
         self.assertTrue(isinstance(tsk1, SingleFileDiskCopy))
+        self.assertEqual(tsk.source.name, tsk1.source.name)
+        self.assertEqual(tsk.target.name, tsk1.target.name)
 
