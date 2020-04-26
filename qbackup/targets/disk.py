@@ -8,7 +8,7 @@ class Disk(Target):
     pass
 
 @json_serialize
-class File(Disk):
+class FileTarget(Disk):
     """ target file """
     def __init__(self, name = None):
         super().__init__()

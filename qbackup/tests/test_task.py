@@ -1,8 +1,8 @@
 from unittest import TestCase
 
 from ..tasks import Task, SingleFileDiskCopy
-from ..sources import File as FileSrc
-from ..targets import File as FileTgt
+from ..sources import FileSource
+from ..targets import FileTarget
 
 class Test_Task(TestCase):
     def test_task_create(self):
@@ -13,8 +13,8 @@ class Test_Task(TestCase):
         src = "AAA"
         tgt = "BBB"
         tsk = SingleFileDiskCopy(src, tgt)
-        self.assertTrue(isinstance(tsk.source, FileSrc))
-        self.assertTrue(isinstance(tsk.target, FileTgt))
+        self.assertTrue(isinstance(tsk.source, FileSource))
+        self.assertTrue(isinstance(tsk.target, FileTarget))
 
         jstr = tsk.to_json()
 
