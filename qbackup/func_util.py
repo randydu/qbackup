@@ -14,7 +14,7 @@ def singleton(cls):
         assert(id(a1) == id(a2))
     
     """
-    class _singleCls(cls):
+    class SingleCls(cls):
         inst = None
         inited = False
 
@@ -32,4 +32,4 @@ def singleton(cls):
         def getInstance(cls):
             return cls.inst if cls.inst else cls()
 
-    return _singleCls
+    return SingleCls
