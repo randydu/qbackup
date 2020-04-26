@@ -8,7 +8,7 @@ from .. import sources, targets
 from ..json_util import json_serialize
 
 
-@json_serialize("filecopy11", version=1)
+@json_serialize(version=1)
 class SingleFileDiskCopy(Task):
     """ single file disk copy in local disk """
     def __init__(self, src: str = None, tgt: str = None):

@@ -15,6 +15,27 @@ Simple json serialization utility
         assert(isinstance(a1, A))
         assert(a0.name == a1.name)
 
+        ==> class-id = 'A'
+
+
+        @json_serialize()
+        class B: pass
+
+        ==> class-id = 'B'
+
+        @json_serialize("my-clsid")
+        class C0: pass
+
+        ==> class-id = 'my-clsid'
+
+        @json_serialize("my-cls-id", version=1)
+        class C1: pass
+
+        ==> class-id = 'my-clsid:1'
+
+        When deserializing, json_decode() tries to return python object fully matching the class-id, if only the version
+        mismatch, it returns the python object with the latest version, if matched class-id is found, exception JSON_SERIALIZE_ERROR
+        is raised.
 Limit:
 ------
 
@@ -37,9 +58,18 @@ import json
 # identifier of the serialized class
 _clsid = '_clsid_' 
 
+def JSON_SERIALIZE_ERROR(Exception):pass
+
 def _getTypeKey(typ):
     # get a full class identifier from a class type
     return typ.__name__ 
+
+def _parseClassId(id): # -> (base, ver)
+    x = id.split(':')
+    return (x[0], x[1] if len(x) > 1 else 0)
+
+def _getClassId(base, ver):
+    return base if ver == 0 else base + ':' + str(ver)
 
 class _MyJSONEncoder(json.JSONEncoder):
     # customized encoder to support registered classes
@@ -47,33 +77,38 @@ class _MyJSONEncoder(json.JSONEncoder):
     enable_all_fields = False
 
     @classmethod
-    def registerClass(cls, new_type, clsid, version):
-        key = clsid if version == 0 else clsid + ':' + str(version)
+    def registerClass(cls, new_type, base, ver):
+        key = _getClassId(base, ver)
         if key in cls.types:
-            raise ValueError(f"class {key} already registered!")
+            raise JSON_SERIALIZE_ERROR(f"class {key} already registered!")
 
         cls.types[key] = new_type
 
     @classmethod
     def resolveClass(cls, clsid):
-        if clsid in cls.types:
+        if clsid in cls.types: # full match
             return cls.types[clsid]
         
-        # TODO: adds version compatibility support
-        ...
+        # version compatibility support
 
-        raise ValueError(f"class-ID '{clsid}' not supported!")
+        base, _ = _parseClassId(clsid)
+        try:
+            max_ver = max([ j[1] for j in [ _parseClassId(i) for i in cls.types ] if j[0] == base ])
+            return cls.types[_getClassId(base, max_ver)]
+        except ValueError:
+            # no version at all
+            raise JSON_SERIALIZE_ERROR(f"class-ID '{clsid}' not supported!")
+
+    def findClsIdfromObjectType(self, obj_type):
+        # try finding if obj's type is registered (supports json-serialize)? 
+        for clsid, typ in self.types.items():
+            if typ == obj_type:
+                return clsid
+        raise ValueError('object type not registered')
 
     def default(self, obj):
-        def findClsIdfromObjectType(obj_type):
-            # try finding if obj's type is registered (supports json-serialize)? 
-            for clsid, typ in self.types.items():
-                if typ == obj_type:
-                    return clsid
-            raise ValueError('object type not registered')
-
         try:
-            clsid = findClsIdfromObjectType(type(obj))
+            clsid = self.findClsIdfromObjectType(type(obj))
         except ValueError:
             return super().default(obj)
         else:
@@ -103,14 +138,22 @@ def json_decode(jstr):
         if _clsid not in dic:
             return dic
 
-        key = dic[_clsid]
-        typ = _MyJSONEncoder.resolveClass(key)
+        clsid = dic[_clsid]
+        typ = _MyJSONEncoder.resolveClass(clsid)
 
         r = typ()
+        fields = dir(r) # all existent fields
+
         for i in dic:
             if i != _clsid:
                 v = dic[i]
-                r.__setattr__(i, v if not isinstance(v, dict) else resolve_my_types(v))
+                
+                #TODO: adds version migration query logic
+                ...
+
+                # here we only set the existent fields to avoid data polution.
+                if i in fields:
+                    r.__setattr__(i, v if not isinstance(v, dict) else resolve_my_types(v))
 
         return r
 
@@ -173,15 +216,15 @@ def _json_serialize_with_param(clsid: str, **kwargs):
         except KeyError:
             version = 0
 
-        return _patch(cls, clsid, version)
+        return _patch(cls, clsid if clsid != "" else _getTypeKey(cls), version)
 
     return wrap
 
-def json_serialize(cls_or_id, **kwargs):
+def json_serialize(cls_or_id="", **kwargs):
     if isinstance(cls_or_id, type):
         return _json_serialize_no_param(cls_or_id)
     else:
         if not isinstance(cls_or_id, str):
-            raise ValueError("syntax: json_serialize(id, [version=1]), id must be a string")
+            raise JSON_SERIALIZE_ERROR("syntax: json_serialize(id, [version=1]), id must be a string")
 
         return _json_serialize_with_param(cls_or_id, **kwargs)
