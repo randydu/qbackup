@@ -1,7 +1,7 @@
 """ jobs to do local file copy """ 
 
 from .runner import Job, task
-from ..tasks import SingleFileDiskCopy
+from ..tasks.file_disk import SingleFileDiskCopy
 
 
 @task(SingleFileDiskCopy)

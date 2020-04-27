@@ -1,4 +1,4 @@
-from ..tasks import Task
+from ..tasks.task import Task
 from ..func_util import singleton
 
 from concurrent import futures

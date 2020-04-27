@@ -1,13 +1,16 @@
 from unittest import TestCase
 
-from ..tasks import Task, SingleFileDiskCopy
-from ..sources import FileSource
-from ..targets import FileTarget
+from ..tasks.task import Task
+from ..tasks.file_disk import SingleFileDiskCopy
+from ..sources.file import FileSource
+from ..targets.disk import FileTarget
 
 class Test_Task(TestCase):
     def test_task_create(self):
         tsk = Task()
         self.assertTrue(tsk.source is None)
+
+
 
     def test_single_file_disk_copy(self):
         src = "AAA"

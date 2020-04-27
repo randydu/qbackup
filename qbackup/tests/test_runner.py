@@ -1,8 +1,9 @@
 from unittest import TestCase
 
-from ..runners import Runner
-from ..tasks import Task, SingleFileDiskCopy
+from ..runners.runner import Runner
 
+from ..tasks.task import Task
+from ..tasks.file_disk import SingleFileDiskCopy
 class Test_Runner(TestCase):
 
     def test_runner_single_instance(self):
@@ -18,3 +19,6 @@ class Test_Runner(TestCase):
         tsk = SingleFileDiskCopy(src, tgt)
         tsk.run()
         self.assertEqual(tsk.status, Task.Status.DONE)
+
+    def test_dummy(self):
+        pass

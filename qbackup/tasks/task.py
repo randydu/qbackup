@@ -70,7 +70,7 @@ class Task(object):
     # run
     def run(self):
         """ [sync] execute the task, returns when the task is either done or cancelled """
-        from ..runners import Runner
+        from ..runners.runner import Runner
 
         self._error = None
         self._result = None

@@ -13,6 +13,3 @@ class SingleFileDiskCopy(Task):
     """ single file disk copy in local disk """
     def __init__(self, src: str = None, tgt: str = None):
         super().__init__(sources.file.FileSource(src), targets.disk.FileTarget(tgt))
-
-
-
