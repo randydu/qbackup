@@ -1,6 +1,6 @@
 """ disk as task target """
 
-from .target import Target
+from ..target import Target
 from ..json_util import json_serialize
 
 class Disk(Target):

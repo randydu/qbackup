@@ -2,7 +2,7 @@
 disk file as task source
 """ 
 
-from .source import Source
+from ..source import Source
 from ..json_util import json_serialize
 
 @json_serialize

@@ -3,7 +3,7 @@
   Copy a single file within local disk
 """
 
-from .task import Task
+from ..task import Task
 from .. import sources, targets
 from ..json_util import json_serialize
 

@@ -2,10 +2,11 @@
 Task
 """
 
-from .. import config
-from .. import sources
-from .. import targets
-from ..json_util import json_decode, json_encode
+from . import config
+from . import sources
+from . import targets
+from .runner import Runner
+from .json_util import json_decode, json_encode
 
 from enum import IntEnum
         
@@ -70,7 +71,6 @@ class Task(object):
     # run
     def run(self):
         """ [sync] execute the task, returns when the task is either done or cancelled """
-        from ..runners.runner import Runner
 
         self._error = None
         self._result = None

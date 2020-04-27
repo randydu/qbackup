@@ -1,5 +1,4 @@
-from ..tasks.task import Task
-from ..func_util import singleton
+from .func_util import singleton
 
 from concurrent import futures
 
@@ -22,7 +21,7 @@ class Runner(object):
     def submitJob(self, job):
         return self._executor.submit(job)
 
-    def runTask(self, tsk: Task):
+    def runTask(self, tsk):
         """ runs a task, returns when the task is done """
         try:
             cls_job = self._mapJob[type(tsk)]
@@ -81,6 +80,3 @@ class task(object):
         Runner.getInstance().registerJob(self._clsTask, clsJob)
         return clsJob
 
-
-# register all jobs here
-from . import filecopy

@@ -1,6 +1,6 @@
 from unittest import TestCase
 
-from ..tasks.task import Task
+from ..task import Task
 from ..tasks.file_disk import SingleFileDiskCopy
 from ..sources.file import FileSource
 from ..targets.disk import FileTarget

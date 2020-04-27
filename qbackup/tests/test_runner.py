@@ -1,8 +1,8 @@
 from unittest import TestCase
 
-from ..runners.runner import Runner
+from ..runner import Runner
 
-from ..tasks.task import Task
+from ..task import Task
 from ..tasks.file_disk import SingleFileDiskCopy
 class Test_Runner(TestCase):
 
