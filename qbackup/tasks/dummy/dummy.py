@@ -15,9 +15,10 @@ class DummyJob(Job):
     def __call__(self):
         from time import sleep
 
+        total = 3
         print("dummy >>>")
-        printProgressBar(0, 10, prefix='dummy: ')
-        for i in range(10):
+        printProgressBar(0, total, prefix='dummy: ')
+        for i in range(total):
             sleep(1)
-            printProgressBar(i+1, 10, prefix='dummy')
+            printProgressBar(i+1, total, prefix='dummy')
         print("dummy <<<")

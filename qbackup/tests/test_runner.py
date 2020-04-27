@@ -1,12 +1,8 @@
-from unittest import TestCase
-
 from ..runner import Runner
 
-class Test_Runner(TestCase):
-
-    def test_runner_single_instance(self):
-        r1 = Runner()
-        r2 = Runner()
-        r3 = Runner.getInstance()
-        self.assertEqual(id(r1), id(r2))
-        self.assertEqual(id(r1), id(r3))
+def test_runner_single_instance():
+    r1 = Runner()
+    r2 = Runner()
+    r3 = Runner.getInstance()
+    assert id(r1) == id(r2)
+    assert id(r1) == id(r3)
