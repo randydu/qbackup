@@ -12,15 +12,11 @@ class DummyTask(Task):
 class DummyJob(Job):
     def __call__(self):
         from time import sleep
-        from ...func_util import printProgressBar
 
-        total = 3
-        print("dummy >>>")
-        printProgressBar(0, total, prefix='dummy: ')
+        total = 5
         for i in range(total):
             sleep(1)
-            printProgressBar(i+1, total, prefix='dummy')
-        print("dummy <<<")
+            self._task.progress = (i+1)/total
 
 
 def _register():

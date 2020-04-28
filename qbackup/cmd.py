@@ -6,7 +6,13 @@ def registerCmd(cmd):
     print(f"registering {cmd}\r\n")
 
 
-def run():
+def run(gui = True):
     jstr = '{ "_clsid_":"DummyTask" }'
     task = Task.from_json(jstr)
-    task.run()
+
+    if gui:
+        from .uis import qt
+        qt.run(task)
+    else:
+        from .uis import console
+        console.run(task)

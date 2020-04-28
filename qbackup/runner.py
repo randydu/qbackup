@@ -21,18 +21,18 @@ class Runner(object):
     def submitJob(self, job):
         return self._executor.submit(job)
 
-    def runTask(self, tsk):
+    def runTask(self, tsk, wait = True):
         """ runs a task, returns when the task is done """
         try:
             cls_job = self._mapJob[type(tsk)]
         except KeyError:
             raise ValueError(f"task type ({type(tsk).__name__}) not supported!")
         else:
-            return cls_job(tsk).execute()
+            return cls_job(tsk).execute(wait)
     
 class Job:
-    def __init__(self, tsk):
-        self._tsk = tsk
+    def __init__(self, task):
+        self._task = task
         self._future = None
 
     def __call__(self):
@@ -40,24 +40,24 @@ class Job:
         
             sub-class must call super().__call__(self) first
         '''
-        self._tsk.onRunning()
+        self._task.onRunning()
     
     def cancel(self):
         return self._future.cancel()
 
     def execute(self, wait = True):
-        self._tsk.onSubmitted()
+        self._task.onSubmitted()
         self._future = Runner.getInstance().submitJob(self)
         self._future.add_done_callback(self._cbDone)
         return self._future.result() if wait else None 
 
     def _cbDone(self, ft): 
         try:
-            self._tsk.onSuccess(ft.result())
+            self._task.onSuccess(ft.result())
         except futures.CancelledError:
-            self._tsk.onCancelled()
+            self._task.onCancelled()
         except Exception as e:
-            self._tsk.onError(e)
+            self._task.onError(e)
 
 
     

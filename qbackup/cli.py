@@ -1,13 +1,13 @@
 import sys
 
 def main(*argv):
-    # loads all plugin tasks under the "./tasks" folder
-    from . import tasks
+    from .task import Task
+    Task.importAllTasks()
 
     print("CLI >>", *argv)
 
     from . import cmd
-    cmd.run()
+    cmd.run(gui=False)
 
 
 

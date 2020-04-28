@@ -30,6 +30,7 @@ class Task(object):
     _ec = ErrorCode.INVALID 
     _error = None  # task error on failure
     _result = None # task result on success
+    _progress: float = 0
 
     config = None
     source = None
@@ -51,6 +52,14 @@ class Task(object):
     def result(self):
         return self._result
 
+    @property
+    def progress(self)->float:
+        ''' complete guage [0.0, 1.0] '''
+        return self._progress
+
+    @progress.setter
+    def progress(self, v:float):
+        self._progress = v
 
     # io
     @staticmethod
@@ -68,14 +77,24 @@ class Task(object):
         with open(fname, "w") as f:
             f.write(jstr)
 
+    @staticmethod
+    def importAllTasks():
+        ''' import all available tasks in qbackup/tasks folder 
+        
+            the ./tasks/__init__.py will dynamically import all sub-packages
+        '''
+        from . import tasks
+
+
+
     # run
-    def run(self):
+    def run(self, wait = True):
         """ [sync] execute the task, returns when the task is either done or cancelled """
 
         self._error = None
         self._result = None
         
-        Runner.getInstance().runTask(self)
+        Runner.getInstance().runTask(self, wait)
 
     # event listeners
     def onSubmitted(self):
@@ -102,5 +121,4 @@ class Task(object):
         ''' called when task is cancelled '''
         self.ErrorCode = Task.ErrorCode.CANCELLED
         self._status = Task.Status.DONE
-
 
