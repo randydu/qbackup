@@ -6,6 +6,8 @@ from ..task import Task
 
 from ..ui import TaskUI
 
+from PyQt5 import QtGui
+
 from PyQt5.QtWidgets import QMainWindow, QWidget, QProgressBar
 from PyQt5.QtWidgets import QApplication
 
@@ -24,24 +26,33 @@ class _TaskUIQt(TaskUI):
         uiMain.setWindowTitle(f"QBackup: [{taskName}]")
 
         taskGauge = QProgressBar(uiMain)
-        taskGauge.setMaximum(100)
-        taskGauge.setMinimum(0)
-        taskGauge.setValue(0)
+
+        if self._task.isProgressAvailable():
+            taskGauge.setRange(0,100)
+            taskGauge.setValue(0)
+        else:
+            taskGauge.setRange(0,0)
 
         uiMain.setCentralWidget(taskGauge)        
+
+        statusBar = uiMain.statusBar()
 
         uiMain.setGeometry(300, 300, 350, 50)
         uiMain.show()
 
         self._task.run(wait = False)
+        statusBar.showMessage('running...')
+
 
         def task_monitor():
-            taskGauge.setValue(self._task.progress * 100)
+            if self._task.isProgressAvailable():
+                taskGauge.setValue(self._task.progress*100)
+
             if self._task.status != Task.Status.DONE:
                 self.timer = threading.Timer(1, task_monitor)
                 self.timer.start()
             else:
-                print('done')
+                statusBar.showMessage('done')
 
         self.timer = threading.Timer(1, task_monitor)
         self.timer.start()

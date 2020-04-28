@@ -52,9 +52,15 @@ class Task(object):
     def result(self):
         return self._result
 
+    def isProgressAvailable(self):
+        return self._progress >= 0
+
     @property
     def progress(self)->float:
         ''' complete guage [0.0, 1.0] '''
+        if self._progress < 0:
+            raise RuntimeError('progress not available')
+
         return self._progress
 
     @progress.setter
