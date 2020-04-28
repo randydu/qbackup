@@ -10,6 +10,13 @@ from ...json_util import json_serialize
   Copy a single file within local disk
 """
 
+def _register():
+    from ...cmd import registerCmd
+    registerCmd('filecopy')
+
+_register()
+
+
 @json_serialize(version=1)
 class SingleFileDiskCopy(Task):
     """ single file disk copy in local disk """

@@ -1,8 +1,6 @@
 
 from ...task import Task
 from ...runner import Job, task
-from ...func_util import printProgressBar
-
 from ...json_util import json_serialize
 
 @json_serialize
@@ -14,6 +12,7 @@ class DummyTask(Task):
 class DummyJob(Job):
     def __call__(self):
         from time import sleep
+        from ...func_util import printProgressBar
 
         total = 3
         print("dummy >>>")
@@ -22,3 +21,10 @@ class DummyJob(Job):
             sleep(1)
             printProgressBar(i+1, total, prefix='dummy')
         print("dummy <<<")
+
+
+def _register():
+    from ...cmd import registerCmd
+    registerCmd('dummy')
+
+_register()
