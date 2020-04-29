@@ -1,6 +1,6 @@
 """ jobs to do local file copy """ 
 
-from ...runner import Job, task 
+from ...runner import Job, runtask 
 from ...task import Task
 from ... import sources, targets
 from ...json_util import json_serialize
@@ -27,7 +27,7 @@ class SingleFileDiskCopy(Task):
         self.target = targets.disk.FileTarget(tgt)
 
 
-@task(SingleFileDiskCopy)
+@runtask(SingleFileDiskCopy)
 class SingleFileCopyJob(Job):
     def __call__(self): 
         super().__call__()

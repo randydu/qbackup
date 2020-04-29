@@ -61,7 +61,7 @@ class Job:
 
 
     
-class task(object):
+class runtask(object):
     """ class decorator to specify which task type to associate 
     
     ex:  
@@ -79,4 +79,25 @@ class task(object):
     def __call__(self, clsJob):
         Runner.getInstance().registerJob(self._clsTask, clsJob)
         return clsJob
+
+
+def job(clsTask):
+    """ function decorator to turn a function into a job class 
+    
+    @job(clsTask)
+    def upload(task):
+        ...
+    
+    """
+    
+    def toDecorate(f):
+        class WrapJob(Job):
+            def __call__(self):
+                super().__call__()
+                f(self._task)
+    
+        Runner.getInstance().registerJob(clsTask, WrapJob)
+
+
+    return toDecorate
 

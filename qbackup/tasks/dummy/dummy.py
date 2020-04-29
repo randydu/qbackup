@@ -1,6 +1,6 @@
 
 from ...task import Task
-from ...runner import Job, task
+from ...runner import Job, runtask
 from ...json_util import json_serialize
 
 @json_serialize
@@ -8,7 +8,7 @@ class DummyTask(Task):
     ''' dummy task for test '''
     pass
 
-@task(DummyTask)
+@runtask(DummyTask)
 class DummyJob(Job):
     def __call__(self):
         from time import sleep
