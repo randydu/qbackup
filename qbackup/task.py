@@ -2,9 +2,6 @@
 Task
 """
 
-from . import config
-from . import sources
-from . import targets
 from .runner import Runner
 from .json_util import json_decode, json_encode
 
@@ -32,13 +29,8 @@ class Task(object):
     _result = None # task result on success
     _progress: float = 0
 
-    config = None
-    source = None
-    target = None
-
-    def __init__(self, source = None, target = None):
-        self.source = source
-        self.target = target
+    def __init__(self):
+        pass
 
     @property
     def status(self):

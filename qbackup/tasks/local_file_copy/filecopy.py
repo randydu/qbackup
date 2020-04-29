@@ -21,7 +21,10 @@ _register()
 class SingleFileDiskCopy(Task):
     """ single file disk copy in local disk """
     def __init__(self, src: str = None, tgt: str = None):
-        super().__init__(sources.file.FileSource(src), targets.disk.FileTarget(tgt))
+        super().__init__()
+
+        self.source = sources.file.FileSource(src)
+        self.target = targets.disk.FileTarget(tgt)
 
 
 @task(SingleFileDiskCopy)
@@ -29,5 +32,5 @@ class SingleFileCopyJob(Job):
     def __call__(self): 
         super().__call__()
         
-        print(f"copy file {self._tsk.source.name} => {self._tsk.target.name}...")
+        print(f"copy file {self._task.source.name} => {self._task.target.name}...")
 
