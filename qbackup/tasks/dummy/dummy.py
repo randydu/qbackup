@@ -1,22 +1,20 @@
 
-from ...task import Task
-from ...runner import Job, runtask
-from ...json_util import json_serialize
+from ...task import task
+from ...job import job
 
-@json_serialize
-class DummyTask(Task):
+@task
+class DummyTask:
     ''' dummy task for test '''
     pass
 
-@runtask(DummyTask)
-class DummyJob(Job):
-    def __call__(self):
-        from time import sleep
+@job(DummyTask)
+def _(task):
+    from time import sleep
 
-        total = 5
-        for i in range(total):
-            sleep(1)
-            self._task.progress = (i+1)/total
+    total = 5
+    for i in range(total):
+        sleep(1)
+        task.progress = (i+1)/total
 
 
 def _register():

@@ -1,6 +1,6 @@
 """ jobs to do local file copy """ 
 
-from ...runner import Job, runtask 
+from ...job import Job, runtask 
 from ...task import Task
 from ... import sources, targets
 from ...json_util import json_serialize

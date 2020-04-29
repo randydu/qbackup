@@ -120,3 +120,29 @@ class Task(object):
         self.ErrorCode = Task.ErrorCode.CANCELLED
         self._status = Task.Status.DONE
 
+
+def task(clsTask):
+    ''' 
+    class decorator to turn a normal class to a subclass of Task
+    
+    @task
+    class SyncFile:
+        ...
+
+    is equalvalent to:
+
+    @json_serialize
+    class SyncFile(Task):
+        ...
+
+    '''
+
+    from .json_util import json_serialize
+
+    class WrapTask(Task, clsTask):pass
+
+    # simulate the name of input class
+    WrapTask.__name__ = clsTask.__name__
+    WrapTask.__qualname__ = clsTask.__qualname__
+
+    return json_serialize(WrapTask)

@@ -1,9 +1,8 @@
-from ...json_util import json_serialize
-from ...task import Task
-from ...runner import job
+from ...task import task
+from ...job import job
 
-@json_serialize
-class Hello(Task):
+@task
+class Hello:
     ''' dummy task for test '''
     who = "World"
 
