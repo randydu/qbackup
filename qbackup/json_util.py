@@ -211,12 +211,7 @@ def _json_serialize_no_param(cls):
 
 def _json_serialize_with_param(clsid: str, **kwargs):
     def wrap(cls):
-        try:
-            version = kwargs['version']
-        except KeyError:
-            version = 0
-
-        return _patch(cls, clsid if clsid != "" else _getTypeKey(cls), version)
+        return _patch(cls, clsid if clsid != "" else _getTypeKey(cls), kwargs.get('version', 0))
 
     return wrap
 
