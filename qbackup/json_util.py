@@ -112,6 +112,7 @@ class _MyJSONEncoder(json.JSONEncoder):
         except ValueError:
             return super().default(obj)
         else:
+            # To minimize serialized data size, only instantiated fields are saved and the fields defined in class are ignored.
             r = dict(obj.__dict__) if self.enable_all_fields else { k:v for k,v in obj.__dict__.items() if not k.startswith('_') } 
             r[_clsid] = clsid
             return r
@@ -223,3 +224,8 @@ def json_serialize(cls_or_id="", **kwargs):
             raise JSON_SERIALIZE_ERROR("syntax: json_serialize(id, [version=1]), id must be a string")
 
         return _json_serialize_with_param(cls_or_id, **kwargs)
+
+
+def resolveTaskClass(clsid):
+    ''' get task class from its classs-id '''
+    return _MyJSONEncoder.resolveClass(clsid)

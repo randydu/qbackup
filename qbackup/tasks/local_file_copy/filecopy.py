@@ -1,9 +1,11 @@
 """ jobs to do local file copy """ 
 
-from ...job import Job, runtask 
-from ...task import Task
-from ... import sources, targets
-from ...json_util import json_serialize
+from qbackup.job import Job, runtask 
+from qbackup.task import Task
+from qbackup.sources.file import FileSource
+from qbackup.targets.disk import FileTarget
+
+from qbackup.json_util import json_serialize
 
 """ most simple file copy task
 
@@ -17,14 +19,14 @@ def _register():
 _register()
 
 
-@json_serialize(version=1)
+@json_serialize
 class SingleFileDiskCopy(Task):
     """ single file disk copy in local disk """
-    def __init__(self, src: str = None, tgt: str = None):
+    def __init__(self, src: str = "", tgt: str = ""):
         super().__init__()
 
-        self.source = sources.file.FileSource(src)
-        self.target = targets.disk.FileTarget(tgt)
+        self.source = FileSource(src)
+        self.target = FileTarget(tgt)
 
 
 @runtask(SingleFileDiskCopy)

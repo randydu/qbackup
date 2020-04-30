@@ -1,5 +1,5 @@
-from ...sources.file import FileSource
-from ...targets.disk import FileTarget
+from qbackup.sources.file import FileSource
+from qbackup.targets.disk import FileTarget
 
 from .filecopy import *
 

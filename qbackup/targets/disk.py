@@ -9,8 +9,11 @@ class Disk(Target):
 
 @json_serialize
 class FileTarget(Disk):
+    name = ""
     """ target file """
-    def __init__(self, name = None):
+    def __init__(self, name = ""):
         super().__init__()
-        
         self.name = name
+
+    def __str__(self):
+        return self.name

@@ -7,15 +7,20 @@ from ..json_util import json_serialize
 
 @json_serialize
 class FileSource(Source):
+    name = ""
     """ single file as task source """
-    def __init__(self, name = None):
+    def __init__(self, name = ""):
         self.name = name
+
+    def __str__(self):
+        return self.name
     
 
 @json_serialize
 class MultiFileSource(Source):
     """ multiple files as task source """
-    def __init__(self, names = None):
+    names = []
+    def __init__(self, names = []):
         self.names = names
     
 
