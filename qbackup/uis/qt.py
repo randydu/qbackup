@@ -75,6 +75,7 @@ class _TaskUIQt(TaskUI):
         j = 0
         for i in fields:
             layout.addWidget(QLabel(i), j,0)
+            # TODO: inspect field type and uses appropriate widget
             layout.addWidget(QTextEdit(str(getattr(obj, i))), j,1)
             j += 1
 
