@@ -1,7 +1,7 @@
 ''' global settings ''' 
 
-from .func_util import singleton
-from .json_util import json_serialize
+from py_singleton import singleton
+from py_json_serialize import json_serialize
 
 @singleton
 @json_serialize

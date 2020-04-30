@@ -1,7 +1,7 @@
 """ disk as task target """
 
-from ..target import Target
-from ..json_util import json_serialize
+from qbackup.target import Target
+from py_json_serialize import json_serialize
 
 class Disk(Target):
     """ local disk as target target """

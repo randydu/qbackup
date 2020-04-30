@@ -120,3 +120,8 @@ pip-selfcheck.json
 
 # local tmp folders
 tmp/
+
+# package-dev links
+beebird
+py_singleton
+py_json_serialize

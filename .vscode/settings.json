@@ -3,7 +3,7 @@
     "python.testing.nosetestsEnabled": false,
     "python.pythonPath": "/home/randy/.pyenv/versions/qbackup/bin/python",
     "python.testing.pytestArgs": [
-        "qbackup"
+        "tests", "qbackup/tasks"
     ],
     "python.testing.unittestEnabled": false,
 }

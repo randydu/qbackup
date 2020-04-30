@@ -2,8 +2,8 @@
 disk file as task source
 """ 
 
-from ..source import Source
-from ..json_util import json_serialize
+from qbackup.source import Source
+from py_json_serialize import json_serialize
 
 @json_serialize
 class FileSource(Source):
