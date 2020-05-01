@@ -1,6 +1,8 @@
 """ jobs to do local file copy """ 
+import beebird
 from beebird.job import Job, runtask 
 from beebird.task import Task
+
 from qbackup.sources.file import FileSource
 from qbackup.targets.disk import FileTarget
 
@@ -11,11 +13,7 @@ from py_json_serialize import json_serialize
   Copy a single file within local disk
 """
 
-def _register():
-    from beebird.cmd import registerCmd
-    registerCmd('filecopy')
-
-_register()
+beebird.registerCmd('filecopy')
 
 
 @json_serialize
